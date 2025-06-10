@@ -595,7 +595,7 @@
                 <!-- Rates will be inserted here dynamically -->
             </div>
             <p class="text-gray-600 text-sm mt-8 text-center fade-in-item">
-                Las tasas se actualizan regularmente. v1.1
+                Las tasas se actualizan regularmente.
             </p>
         </div>
     </div>
@@ -801,10 +801,24 @@
             }
 
             const encodedMessage = encodeURIComponent(message);
-            const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
             
-            // Changed from window.open to window.location.href for better WebView compatibility
-            window.location.href = whatsappUrl;
+            // Attempt to open WhatsApp directly using whatsapp:// URI scheme
+            const whatsappNativeUrl = `whatsapp://send?phone=${whatsappNumber}&text=${encodedMessage}`;
+            const whatsappWebUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+
+            // Try to open the native WhatsApp app first
+            window.location.href = whatsappNativeUrl;
+
+            // Fallback to the web version if the native app doesn't open after a short delay
+            // This is a common pattern, but behavior can vary in WebViews
+            setTimeout(() => {
+                // Check if the page has changed (meaning the native app probably opened)
+                if (!document.hidden) { // document.hidden checks if the tab is visible
+                    // If the tab is still visible, the native app likely didn't open.
+                    // Redirect to the web.whatsapp.com or wa.me link.
+                    window.location.href = whatsappWebUrl;
+                }
+            }, 1000); // 1-second delay
         }
 
         // --- Functions for navigation and screens ---
