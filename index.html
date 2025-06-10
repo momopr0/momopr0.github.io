@@ -498,7 +498,7 @@
                     placeholder="Ej. 100 MXN"
                     min="0"
                     step="1"  <!-- Changed step to 1 for no decimals -->
-                
+                />
                 <span id="mxnFlag" class="flag">🇲🇽</span>
             </div>
 
@@ -595,7 +595,7 @@
                 <!-- Rates will be inserted here dynamically -->
             </div>
             <p class="text-gray-600 text-sm mt-8 text-center fade-in-item">
-                Las tasas se actualizan regularmente.
+                Las tasas se actualizan regularmente. v1.1
             </p>
         </div>
     </div>
@@ -803,8 +803,8 @@
             const encodedMessage = encodeURIComponent(message);
             const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
             
-            // Open in a new tab for desktop, attempts to open app on mobile
-            window.open(whatsappUrl, '_blank');
+            // Changed from window.open to window.location.href for better WebView compatibility
+            window.location.href = whatsappUrl;
         }
 
         // --- Functions for navigation and screens ---
